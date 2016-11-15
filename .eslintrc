@@ -7,6 +7,7 @@
       {
         "props": false
       }
-    ]
+    ],
+    "no-restricted-syntax": [0, "ForOfStatement"]
   }
 }

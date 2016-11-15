@@ -46,7 +46,7 @@ async function loadFileDependency(p) {
 async function resolve(value, basePath, cache) {
   // This is non-standard. It will merge the results of multiple references.
   if (Array.isArray(value)) {
-    const valuePromises = value.map((e) => resolve(e, basePath, cache));
+    const valuePromises = value.map(e => resolve(e, basePath, cache));
     const values = await Promise.all(valuePromises);
     values.unshift({});
     const merged = Object.assign.apply(null, values);
@@ -81,12 +81,16 @@ async function resolve(value, basePath, cache) {
 }
 
 /**
- * @param {object} spec The root swagger spec JSON
+ * @param {object} specOrString The root swagger spec JSON or a filename to read it from
  * @param {string} basePath The base directory for any relative paths in the specification
  * @param {object} cache optional argument with filename/URL keys and
  *  swagger specs/JSON fragment values
  */
-export default async function traverse(spec, basePath, cache) {
+export default async function traverse(specOrString, basePath, cache) {
+  let spec = specOrString;
+  if (typeof spec === 'string') {
+    spec = await loadFileDependency(specOrString);
+  }
   if (spec.$ref) {
     if (spec.$ref[0] !== '#') {
       return resolve(spec.$ref, basePath, cache || {});
@@ -94,7 +98,7 @@ export default async function traverse(spec, basePath, cache) {
   }
   for (const [key, value] of Object.entries(spec)) {
     if (util.isObject(value)) {
-      spec[key] = await traverse(spec[key], basePath);
+      spec[key] = await traverse(value, basePath, cache);
     }
   }
   return spec;

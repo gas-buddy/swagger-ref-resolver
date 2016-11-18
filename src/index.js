@@ -88,17 +88,21 @@ async function resolve(value, basePath, cache) {
  */
 export default async function traverse(specOrString, basePath, cache) {
   let spec = specOrString;
+  let inferredBasePath = basePath;
   if (typeof spec === 'string') {
     spec = await loadFileDependency(specOrString);
+    if (!inferredBasePath) {
+      inferredBasePath = path.dirname(path.resolve(specOrString));
+    }
   }
   if (spec.$ref) {
     if (spec.$ref[0] !== '#') {
-      return resolve(spec.$ref, basePath, cache || {});
+      return resolve(spec.$ref, inferredBasePath, cache || {});
     }
   }
   for (const [key, value] of Object.entries(spec)) {
     if (util.isObject(value)) {
-      spec[key] = await traverse(value, basePath, cache);
+      spec[key] = await traverse(value, inferredBasePath, cache);
     }
   }
   return spec;

@@ -5,10 +5,7 @@ import jsonResolver from './index';
 
 const sourceFile = process.argv[2];
 
-const swaggerSource = JSON.parse(fs.readFileSync(sourceFile));
-const baseDir = path.dirname(sourceFile);
-
-jsonResolver(swaggerSource, baseDir)
+jsonResolver(sourceFile)
   .then((doc) => {
     // eslint-disable-next-line no-console
     console.log(JSON.stringify(doc, null, '\t'));

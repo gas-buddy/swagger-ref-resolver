@@ -1,6 +1,8 @@
 swagger-ref-resolver
 ====================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/gas-buddy/swagger-ref-resolver.svg)](https://greenkeeper.io/)
+
 Swagger and the swagger ecosystem are not especially well suited to
 document composition. In our case, we want to group a set of related
 operations into a single service/API, but they have a small but natural

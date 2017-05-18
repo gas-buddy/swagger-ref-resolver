@@ -7,6 +7,7 @@ tap.test('ref resolution', async (t) => {
   const resolved = await deref(testSwagger, __dirname);
   t.ok(resolved.paths['/hello/world'], 'Should have a /hello/world path');
   t.ok(resolved.paths['/goodbye'], 'Should have a /goodbye path');
+  t.ok(resolved.definitions.FooBar, 'Should resolve recursively');
   t.end();
 });
 

@@ -13,3 +13,5 @@ paths:
             type: string
         400:
           description: Invalid characters in "user" were provided.
+definitions:
+  $ref: './part3.yaml#definitions'

@@ -43,10 +43,12 @@ async function loadFileDependency(p) {
   }));
 }
 
-async function resolve(value, basePath, cache) {
+async function resolve(value, basePath, cache, traverseFn) {
   // This is non-standard. It will merge the results of multiple references.
   if (Array.isArray(value)) {
-    const valuePromises = value.map(e => resolve(e, basePath, cache));
+    const valuePromises = value.map(e =>
+      resolve(e, basePath, cache)
+        .then(s => traverseFn(s, basePath, cache)));
     const values = await Promise.all(valuePromises);
     values.unshift({});
     const merged = Object.assign.apply(null, values);
@@ -97,11 +99,12 @@ export default async function traverse(specOrString, basePath, cache) {
   }
   if (spec.$ref) {
     if (spec.$ref[0] !== '#') {
-      return resolve(spec.$ref, inferredBasePath, cache || {});
+      return resolve(spec.$ref, inferredBasePath, cache || {}, traverse);
     }
   }
   for (const [key, value] of Object.entries(spec)) {
     if (util.isObject(value)) {
+      // eslint-disable-next-line no-await-in-loop
       spec[key] = await traverse(value, inferredBasePath, cache);
     }
   }

@@ -4,8 +4,8 @@
   "description": "A module to convert $refs in swagger to deal with tooling that can't handle composition (and gives you some extra superpowers)",
   "main": "build/index.js",
   "scripts": {
-    "test": "tap --node-arg=-r --node-arg=babel-register tests/*.js",
-    "cover": "nyc --reporter=lcov npm test",
+    "test": "tap --node-arg=-r --node-arg=babel-register tests/test_*.js",
+    "cover": "BABEL_ENV=test nyc tap tests/test_*.js && nyc check-coverage && nyc report --reporter=text",
     "lint": "eslint .",
     "build": "babel src/ --out-dir build/",
     "prepublish": "npm run build"
@@ -31,22 +31,30 @@
   "dependencies": {
     "babel-runtime": "^6.18.0",
     "js-yaml": "^3.6.1",
-    "superagent": "^2.2.0"
+    "superagent": "^3"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-core": "^6.2.1",
     "babel-eslint": "^7.1.0",
-    "babel-plugin-transform-object-entries": "^1.0.0",
-    "babel-plugin-transform-async-to-generator": "^6.8.0",
-    "babel-preset-node6": "^11.0.0",
+    "babel-preset-gasbuddy": "^2",
     "babel-register": "^6.2.0",
     "eslint": "^3.0.0",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-import": "^2.1.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.6.0",
-    "nyc": "^9.0.0",
-    "tap": "^8.0.0"
+    "eslint-config-gasbuddy": "^2",
+    "nyc": "^10.0.0",
+    "tap": "^10.0.0"
+  },
+  "nyc": {
+    "include": [
+      "src"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "reporter": [
+      "lcov"
+    ]
   }
 }

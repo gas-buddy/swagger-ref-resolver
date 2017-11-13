@@ -37,8 +37,8 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^7.1.0",
-    "babel-preset-gasbuddy": "^2.6.0",
+    "babel-eslint": "^8.0.2",
+    "babel-preset-gasbuddy": "^3.1.0",
     "babel-register": "^6.26.0",
     "eslint-config-gasbuddy": "^4.0.0",
     "nyc": "^11.1.0",

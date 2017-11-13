@@ -28,6 +28,9 @@
     "url": "https://github.com/gas-buddy/swagger-ref-resolver/issues"
   },
   "homepage": "https://github.com/gas-buddy/swagger-ref-resolver#readme",
+  "engines": {
+    "node": "^8"
+  },
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "js-yaml": "^3.9.1",

@@ -1,8 +1,8 @@
-box: node:6
+box: gasbuddy/node-app:wercker-node8
 
 build:
   steps:
-    - npm-install
+    - gasbuddy/npm-install@1.0.0
 
     - script:
       name: lint

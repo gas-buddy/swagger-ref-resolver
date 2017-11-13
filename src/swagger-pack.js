@@ -1,25 +1,18 @@
 #!/usr/bin/env node
-import { Readable } from 'stream';
-import validator from 'swagger-spec-validator';
+import { inspect } from 'util';
+import validator from 'swagger-parser';
 import jsonResolver from './index';
 
 const sourceFile = process.argv[2];
 
 function pretty(obj) {
-  return JSON.stringify(obj, null, '\t');
+  return inspect(obj, null, 5);
 }
 
 jsonResolver(sourceFile)
-  .then(async (doc) => {
+  .then((doc) => {
     if (process.argv[3] === '--validate') {
-      const r = new Readable();
-      r.push(pretty(doc));
-      r.push(null);
-      const result = await validator.validate(r);
-      if (Object.keys(result).length > 0) {
-        throw new Error(`Validation Failed!
-${pretty(result)}`);
-      }
+      return validator.validate(doc);
     }
     return doc;
   })

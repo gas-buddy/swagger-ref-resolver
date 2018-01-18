@@ -1,18 +1,17 @@
 #!/usr/bin/env node
-import { inspect } from 'util';
 import validator from 'swagger-parser';
 import jsonResolver from './index';
 
 const sourceFile = process.argv[2];
 
 function pretty(obj) {
-  return inspect(obj, null, 5);
+  return JSON.stringify(obj, null, '  ');
 }
 
 jsonResolver(sourceFile)
   .then((doc) => {
     if (process.argv[3] === '--validate') {
-      return validator.validate(doc);
+      validator.validate(doc);
     }
     return doc;
   })

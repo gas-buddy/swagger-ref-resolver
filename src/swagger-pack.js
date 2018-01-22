@@ -9,9 +9,9 @@ function pretty(obj) {
 }
 
 jsonResolver(sourceFile)
-  .then((doc) => {
+  .then(async (doc) => {
     if (process.argv[3] === '--validate') {
-      validator.validate(doc);
+      await validator.validate(doc);
     }
     return doc;
   })

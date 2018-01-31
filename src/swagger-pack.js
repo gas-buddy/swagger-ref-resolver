@@ -10,8 +10,9 @@ function pretty(obj) {
 
 jsonResolver(sourceFile)
   .then(async (doc) => {
+    const validatorPlayground = JSON.parse(JSON.stringify(doc));
     if (process.argv[3] === '--validate') {
-      await validator.validate(doc);
+      await validator.validate(validatorPlayground);
     }
     return doc;
   })

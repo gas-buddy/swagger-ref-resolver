@@ -13,6 +13,9 @@ jsonResolver(sourceFile)
     const validatorPlayground = JSON.parse(JSON.stringify(doc));
     if (process.argv[3] === '--validate') {
       await validator.validate(validatorPlayground);
+      if (doc && (!doc.consumes || !doc.consumes.length)) {
+        throw new Error('Swagger spec is missing "consumes" setting. You should set this to application/json generally.');
+      }
     }
     return doc;
   })

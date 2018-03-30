@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/swagger-ref-resolver",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "A module to convert $refs in swagger to deal with tooling that can't handle composition (and gives you some extra superpowers)",
   "main": "build/index.js",
   "scripts": {

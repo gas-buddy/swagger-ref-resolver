@@ -1,10 +1,10 @@
 {
   "name": "@gasbuddy/swagger-ref-resolver",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "A module to convert $refs in swagger to deal with tooling that can't handle composition (and gives you some extra superpowers)",
   "main": "build/index.js",
   "scripts": {
-    "test": "tap --node-arg=-r --node-arg=babel-register tests/test_*.js",
+    "test": "tap --node-arg=-r --node-arg=@babel/register tests/test_*.js",
     "cover": "BABEL_ENV=test nyc tap tests/test_*.js && nyc check-coverage && nyc report --reporter=text",
     "lint": "eslint .",
     "build": "babel src/ --out-dir build/",
@@ -32,27 +32,24 @@
     "node": "^8"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
-    "js-yaml": "^3.9.1",
-    "superagent": "^3.6.0",
-    "swagger-parser": "^4.0.1"
+    "js-yaml": "^3.12.0",
+    "superagent": "^3.8.3",
+    "swagger-parser": "^6.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.2",
-    "babel-preset-gasbuddy": "^3.1.0",
-    "babel-register": "^6.26.0",
-    "eslint-config-gasbuddy": "^4.0.0",
-    "nyc": "^11.1.0",
-    "tap": "^10.7.2"
+    "@babel/cli": "^7.1.2",
+    "@babel/register": "^7.0.0",
+    "babel-preset-gasbuddy": "^4.1.0",
+    "eslint-config-gasbuddy": "^5.0.2",
+    "nyc": "^13.1.0",
+    "tap": "^12.0.1"
   },
   "nyc": {
     "include": [
       "src"
     ],
     "require": [
-      "babel-register"
+      "@babel/register"
     ],
     "sourceMap": false,
     "instrument": false,

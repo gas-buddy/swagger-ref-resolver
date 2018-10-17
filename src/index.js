@@ -46,9 +46,8 @@ async function loadFileDependency(p) {
 async function resolve(value, basePath, cache, traverseFn) {
   // This is non-standard. It will merge the results of multiple references.
   if (Array.isArray(value)) {
-    const valuePromises = value.map(e =>
-      resolve(e, basePath, cache)
-        .then(s => traverseFn(s, basePath, cache)));
+    const valuePromises = value
+      .map(e => resolve(e, basePath, cache).then(s => traverseFn(s, basePath, cache)));
     const values = await Promise.all(valuePromises);
     values.unshift({});
     const merged = Object.assign.apply(null, values);

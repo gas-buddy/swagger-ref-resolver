@@ -109,3 +109,38 @@ export default async function traverse(specOrString, basePath, cache) {
   }
   return spec;
 }
+
+function cleanParameters(spec, params) {
+  return params.map((paramSpec) => {
+    if (paramSpec.$ref?.startsWith('#/')) {
+      const ref = dig(spec, paramSpec.$ref.substring(2));
+      if (ref) {
+        return ref;
+      }
+    }
+    return paramSpec;
+  });
+}
+
+export function resolveAllParameters(spec) {
+  const { paths, ...rest } = spec;
+  let fixed = paths;
+  if (spec.paths) {
+    fixed = {};
+    Object.entries(spec.paths).forEach(([pathName, pathSpec]) => {
+      const { parameters, ...methods } = pathSpec;
+      Object.entries(methods).forEach(([methodName, methodSpec]) => {
+        const { parameters: methodParams, ...restSpec } = methodSpec;
+        if (methodParams) {
+          restSpec.parameters = cleanParameters(spec, methodParams);
+        }
+        methods[methodName] = restSpec;
+      });
+      if (parameters) {
+        methods.parameters = cleanParameters(spec, parameters);
+      }
+      fixed[pathName] = methods;
+    });
+  }
+  return { ...rest, paths: fixed };
+}

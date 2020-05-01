@@ -4,8 +4,18 @@ info:
   title: "Hello World API"
 paths:
   /hello/world:
+    parameters:
+      - $ref: '#/parameters/account_id'
+      - $ref: '#/parameters/numbertest'
     get:
       description: Returns a greeting to the user!
+      parameters:
+        - $ref: '#/parameters/account_id'
+        - $ref: '#/parameters/numbertest'
+        - name: otherparam
+          in: query
+          type: string
+          required: false
       responses:
         200:
           description: Returns the greeting.
@@ -15,3 +25,16 @@ paths:
           description: Invalid characters in "user" were provided.
 definitions:
   $ref: './part3.yaml#definitions'
+parameters:
+  numbertest:
+    name: numbertest
+    description: WTF
+    required: false
+    in: query
+    type: integer
+  account_id:
+    name: account_id
+    in: path
+    required: true
+    type: integer
+    format: int64

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import validator from 'swagger-parser';
-import jsonResolver from './index';
+import jsonResolver, { resolveAllParameters } from './index';
 
 const sourceFile = process.argv[2];
+const fixParams = process.argv.includes('--deref-params');
 
 function pretty(obj) {
   return JSON.stringify(obj, null, '  ');
@@ -20,8 +21,9 @@ jsonResolver(sourceFile)
     return doc;
   })
   .then((doc) => {
+    const spec = fixParams ? resolveAllParameters(doc) : doc;
     // eslint-disable-next-line no-console
-    console.log(pretty(doc));
+    console.log(pretty(spec));
   }).catch((error) => {
     // eslint-disable-next-line no-console
     console.error(error.message, error.stack);

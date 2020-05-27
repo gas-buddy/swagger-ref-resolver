@@ -1,9 +1,14 @@
 #!/usr/bin/env node
-import validator from 'swagger-parser';
-import jsonResolver, { resolveAllParameters } from './index';
+import minimist from 'minimist';
+import validator from '@apidevtools/swagger-parser';
+import jsonResolver, { resolveAllParameters, modifyPaths } from './index';
 
-const sourceFile = process.argv[2];
-const fixParams = process.argv.includes('--deref-params');
+const argv = minimist(process.argv.slice(2), {
+  boolean: ['deref-params', 'validate'],
+});
+
+const sourceFile = argv._?.[0];
+const fixParams = argv['deref-params'];
 
 function pretty(obj) {
   return JSON.stringify(obj, null, '  ');
@@ -12,7 +17,7 @@ function pretty(obj) {
 jsonResolver(sourceFile)
   .then(async (doc) => {
     const validatorPlayground = JSON.parse(JSON.stringify(doc));
-    if (process.argv[3] === '--validate') {
+    if (argv.validate) {
       await validator.validate(validatorPlayground);
       if (doc && (!doc.consumes || !doc.consumes.length)) {
         throw new Error('Swagger spec is missing "consumes" setting. You should set this to application/json generally.');
@@ -21,7 +26,8 @@ jsonResolver(sourceFile)
     return doc;
   })
   .then((doc) => {
-    const spec = fixParams ? resolveAllParameters(doc) : doc;
+    const opts = { stripPaths: argv.stripPaths?.split(',') };
+    const spec = fixParams ? resolveAllParameters(doc, opts) : modifyPaths(doc, opts);
     // eslint-disable-next-line no-console
     console.log(pretty(spec));
   }).catch((error) => {

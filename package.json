@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/swagger-ref-resolver",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "A module to convert $refs in swagger to deal with tooling that can't handle composition (and gives you some extra superpowers)",
   "main": "build/index.js",
   "scripts": {
@@ -32,12 +32,13 @@
     "node": "^8"
   },
   "dependencies": {
-    "js-yaml": "^3.13.1",
-    "superagent": "^5.2.2",
-    "swagger-parser": "^6.0.5"
+    "@apidevtools/swagger-parser": "^9.0.1",
+    "js-yaml": "^3.14.0",
+    "minimist": "^1.2.5",
+    "superagent": "^5.2.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
+    "@babel/cli": "^7.10.0",
     "@babel/register": "^7.9.0",
     "babel-preset-gasbuddy": "^6.0.0",
     "eslint-config-gasbuddy": "^5.3.0",

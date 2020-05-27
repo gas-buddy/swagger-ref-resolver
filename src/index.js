@@ -122,12 +122,40 @@ function cleanParameters(spec, params) {
   });
 }
 
-export function resolveAllParameters(spec) {
+export function modifyPaths(spec, { stripPaths }) {
+  const { paths, ...rest } = spec;
+  if (paths && stripPaths?.length) {
+    const fixed = {};
+    Object.entries(spec.paths).forEach(([pathName, pathSpec]) => {
+      let finalPath = pathName;
+      stripPaths.find((strip) => {
+        if (finalPath.startsWith(strip)) {
+          finalPath = finalPath.substring(strip.length);
+          return true;
+        }
+        return false;
+      });
+      fixed[finalPath] = pathSpec;
+    });
+    return { ...rest, paths: fixed };
+  }
+  return spec;
+}
+
+export function resolveAllParameters(spec, { stripPaths } = {}) {
   const { paths, ...rest } = spec;
   let fixed = paths;
   if (spec.paths) {
     fixed = {};
     Object.entries(spec.paths).forEach(([pathName, pathSpec]) => {
+      let finalPath = pathName;
+      (stripPaths || []).find((strip) => {
+        if (finalPath.startsWith(strip)) {
+          finalPath = finalPath.substring(strip.length);
+          return true;
+        }
+        return false;
+      });
       const { parameters, ...methods } = pathSpec;
       Object.entries(methods).forEach(([methodName, methodSpec]) => {
         const { parameters: methodParams, ...restSpec } = methodSpec;
